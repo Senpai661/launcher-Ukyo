@@ -262,7 +262,7 @@ class Settings {
         }
 
         if (!(await this.database.getAll('ram')).length) {
-            this.database.add({ uuid: "1234", ramMin: "1", ramMax: "2" }, 'ram')
+            this.database.add({ uuid: "1234", ramMin: "1", ramMax: "3" }, 'ram')
         }
 
         if (!(await this.database.getAll('screen')).length) {
