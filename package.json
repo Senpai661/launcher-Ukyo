@@ -1,7 +1,7 @@
 {
     "name": "CentralCorp",
     "preductname": "CentralCorp Launcher",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "CentralCorp modded server launcher",
     "main": "src/app.js",
     "author": "Luuxis/Riptiaz",
