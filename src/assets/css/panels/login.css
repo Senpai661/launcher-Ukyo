@@ -122,3 +122,15 @@
     color: #F1F1F1;
     cursor: default;
 }
+
+.password-reset {
+    cursor: pointer;
+    color: #fff;
+    text-decoration: none;
+}
+
+.new-user {
+    cursor: pointer;
+    color: #fff;
+    text-decoration: none;
+}
