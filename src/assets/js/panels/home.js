@@ -181,9 +181,9 @@ class Home {
         let online = document.querySelector(".etat-text .online");
         let serverPing = await new Status("game.centralcorp.fr", "25565").getStatus();
 
-        if (!serverPing.error) {
+        if (serverPing.error) {
             nameServer.textContent = this.config.status.nameServer;
-            serverMs.innerHTML = `<span class="green">En ligne</span> - ${serverPing.ms}ms`;
+            serverMs.innerHTML = `<span class="green">En bêta</span>`;
             online.classList.toggle("off");
             playersConnected.textContent = serverPing.playersConnect;
         } else if (serverPing.error) {
