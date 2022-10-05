@@ -61,7 +61,7 @@ class Home {
                         </div>
                         <div class="news-content">
                             <div class="bbWrapper">
-                                <p>${News.content.replace(/\n/g, '</br>')}</p>
+                                <p>${News.content}</p>
                                 <p class="news-author"><span> ${News.author}</span></p>
                             </div>
                         </div>`
@@ -179,7 +179,7 @@ class Home {
         let serverMs = document.querySelector('.server-text .desc');
         let playersConnected = document.querySelector('.etat-text .text');
         let online = document.querySelector(".etat-text .online");
-        let serverPing = await new Status(this.config.status.ip, this.config.status.port).getStatus();
+        let serverPing = await new Status("game.centralcorp.fr", "25565").getStatus();
 
         if (!serverPing.error) {
             nameServer.textContent = this.config.status.nameServer;

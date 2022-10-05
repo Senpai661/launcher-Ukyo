@@ -1,51 +1,55 @@
-const builder = require('electron-builder')
-const { preductname } = require('./package.json')
+/**
+ * @author Luuxis
+ * @license CC-BY-NC 4.0 - https://creativecommons.org/licenses/by-nc/4.0/
+ */
 
-
-builder.build({
-    config: {
-        generateUpdatesFilesForAllChannels: true,
-        appId: preductname,
-        productName: preductname,
-        artifactName: "${productName}-${os}-${arch}.${ext}",
-        files: ["src/**/*", "package.json", "LICENSE.md"],
-        directories: { "output": "dist" },
-        compression: 'maximum',
-        asar: true,
-        win: {
-            icon: "./src/assets/images/icon.ico",
-            target: [{
-                target: "nsis",
-                arch: ["x64"]
-            }],
-        },
-        nsis: {
-            oneClick: true,
-            allowToChangeInstallationDirectory: false,
-            createDesktopShortcut: true,
-            runAfterFinish: true
-        },
-        mac: {
-            icon: "./src/assets/images/icon.icns",
-            category: "public.app-category.games",
-            target: [{
-                target: "dmg",
-                arch: ["x64", "arm64"]
-            }]
-        },
-        linux: {
-            icon: "./src/assets/images/icon.png",
-            target: [{
-                target: "AppImage",
-                arch: ["x64"]
-            }, {
-                target: "tar.gz",
-                arch: ["x64"]
-            }]
-        }
-    }
-}).then(() => {
-    console.log('le build est terminé')
-}).catch(err => {
-    console.error('Error during build!', err)
-})
+ "use strict";
+ const electron = require("electron");
+ const path = require("path");
+ const os = require("os");
+ const pkg = require("../../../../package.json");
+ let mainWindow = undefined;
+ 
+ function getWindow() {
+     return mainWindow;
+ }
+ 
+ function destroyWindow() {
+     if (!mainWindow) return;
+     mainWindow.close();
+     mainWindow = undefined;
+ }
+ 
+ function createWindow() {
+     destroyWindow();
+     mainWindow = new electron.BrowserWindow({
+         title: pkg.preductname,
+         width: 1280,
+         height: 720,
+         minWidth: 980,
+         minHeight: 552,
+         resizable: true,
+         icon: `./src/assets/images/icon.${os.platform() === "win32" ? "ico" : "png"}`,
+         transparent: os.platform() === 'win32',
+         frame: os.platform() !== 'win32',
+         show: false,
+         webPreferences: {
+             contextIsolation: false,
+             nodeIntegration: true
+         },
+     });
+     electron.Menu.setApplicationMenu(null);
+     mainWindow.setMenuBarVisibility(false);
+     mainWindow.loadFile(path.join(electron.app.getAppPath(), 'src', 'launcher.html'));
+     mainWindow.once('ready-to-show', () => {
+         if (mainWindow) {
+             mainWindow.show();
+         }
+     });
+ }
+ 
+ module.exports = {
+     getWindow,
+     createWindow,
+     destroyWindow,
+ };

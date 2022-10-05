@@ -7,14 +7,14 @@
 
 // libs 
 const fs = require('fs');
-const { Microsoft, Mojang } = require('minecraft-java-core');
+const { Microsoft, Mojang, AZauth } = require('minecraft-java-core');
+const AZAuth = new AZauth('https://centralcorp.fr');
 const { ipcRenderer } = require('electron');
 
 import { config, logger, changePanel, database, addAccount, accountSelect } from './utils.js';
 import Login from './panels/login.js';
 import Home from './panels/home.js';
 import Settings from './panels/settings.js';
-import skin from './panels/panelSkin.js';
 
 class Launcher {
     async init() {
@@ -24,7 +24,7 @@ class Launcher {
         this.config = await config.GetConfig().then(res => res);
         this.news = await config.GetNews().then(res => res);
         this.database = await new database().init();
-        this.createPanels(Login, Home, skin, Settings);
+        this.createPanels(Login, Home, Settings);
         this.getaccounts();
     }
 
@@ -82,60 +82,9 @@ class Launcher {
         } else {
             for (let account of accounts) {
                 account = account.value;
-                if (account.meta.type === 'Xbox') {
-                    console.log(`Initializing Xbox account ${account.name}...`);
-                    let refresh = await new Microsoft(this.config.client_id).refresh(account);
-                    let refresh_accounts;
-                    let refresh_profile;
-
-                    if (refresh.error) {
-                        this.database.delete(account.uuid, 'accounts');
-                        this.database.delete(account.uuid, 'profile');
-                        if (account.uuid === selectaccount) this.database.update({ uuid: "1234" }, 'accounts-selected')
-                        console.error(`[Account] ${account.uuid}: ${refresh.errorMessage}`);
-                        continue;
-                    }
-
-                    refresh_accounts = {
-                        access_token: refresh.access_token,
-                        client_token: refresh.client_token,
-                        uuid: refresh.uuid,
-                        name: refresh.name,
-                        refresh_token: refresh.refresh_token,
-                        user_properties: refresh.user_properties,
-                        meta: {
-                            type: refresh.meta.type,
-                            demo: refresh.meta.demo
-                        }
-                    }
-
-                    refresh_profile = {
-                        uuid: refresh.uuid,
-                        skins: refresh.profile.skins || [],
-                        capes: refresh.profile.capes || [],
-                    }
-
-                    this.database.update(refresh_accounts, 'accounts');
-                    this.database.update(refresh_profile, 'profile');
-                    addAccount(refresh_accounts);
-                    if (account.uuid === selectaccount) accountSelect(refresh.uuid)
-                } else if (account.meta.type === 'Mojang') {
-                    if (account.meta.offline) {
-                    console.log(`Initializing Crack account ${account.name}...`);
-                        addAccount(account);
-                        if (account.uuid === selectaccount) accountSelect(account.uuid)
-                        continue;
-                    }
-
-                    let validate = await Mojang.validate(account);
-                    if (!validate) {
-                        this.database.delete(account.uuid, 'accounts');
-                        if (account.uuid === selectaccount) this.database.update({ uuid: "1234" }, 'accounts-selected')
-                        console.error(`[Account] ${account.uuid}: Token is invalid.`);
-                        continue;
-                    }
-
-                    let refresh = await Mojang.refresh(account);
+                if (account.meta.type === 'Mojang') {
+                    let refresh = await AZAuth.refresh(account);
+                    console.log(refresh);
                     console.log(`Initializing Mojang account ${account.name}...`);
                     let refresh_accounts;
 

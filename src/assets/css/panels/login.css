@@ -29,6 +29,7 @@
     cursor: pointer;
 }
 
+
 .login-type-btn:hover {
     background-color: #006e47;
     box-shadow: 0 0 5px #006e47;
@@ -43,6 +44,10 @@
 .login-type-btn:disabled:hover {
     background-color: #00bd7a;
     box-shadow: 0 0 5px #00bd7a;
+}
+
+.microsoft {
+    display: none;
 }
 
 .login-card-mojang {
