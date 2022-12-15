@@ -188,7 +188,7 @@ class Home {
             playersConnected.textContent = serverPing.playersConnect;
         } else if (serverPing.error) {
             nameServer.textContent = 'Serveur indisponible';
-            serverMs.innerHTML = `<span class="red">Hors ligne</span>`;
+            serverMs.innerHTML = `<span class="green">Hors ligne</span>`;
         }
     }
 

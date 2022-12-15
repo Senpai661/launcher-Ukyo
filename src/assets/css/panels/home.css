@@ -300,7 +300,7 @@
 }
 
 .red {
-    color: #FF0409;
+    color: #1AC707;
 }
 
 .etat-text {
@@ -338,5 +338,5 @@
 }
 
 .online.off {
-    background-color: #FF0409;
+    background-color: #1AC707;
 }
