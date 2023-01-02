@@ -107,18 +107,82 @@ class Login {
         let infoLogin = document.querySelector('.info-login')
         let loginBtn = document.querySelector(".login-btn")
         let mojangBtn = document.querySelector('.mojang')
+        let loginBtn2f = document.querySelector('.login-btn-2f')
+        let a2finput = document.querySelector('.a2f')
+        let infoLogin2f = document.querySelector('.info-login-2f')
+        let cancel2f = document.querySelector('.cancel-2f')
 
         mojangBtn.addEventListener("click", () => {
             document.querySelector(".login-card").style.display = "none";
             document.querySelector(".login-card-mojang").style.display = "block";
-            // document.querySelector('.a2f-card').style.display = "none";
+            document.querySelector('.a2f-card').style.display = "none";
         })
 
         cancelMojangBtn.addEventListener("click", () => {
             document.querySelector(".login-card").style.display = "block";
             document.querySelector(".login-card-mojang").style.display = "none";
-            // document.querySelector('.a2f-card').style.display = "none";
+            document.querySelector('.a2f-card').style.display = "none";
         })
+        cancel2f.addEventListener("click", () => {
+            document.querySelector(".login-card").style.display = "block";
+            document.querySelector(".login-card-mojang").style.display = "none";
+            document.querySelector('.a2f-card').style.display = "none";
+            infoLogin.style.display = "none";
+            cancelMojangBtn.disabled = false;
+            mailInput.value = "";
+            loginBtn.disabled = false;
+            mailInput.disabled = false;
+            passwordInput.disabled = false;
+            passwordInput.value = "";
+        })
+
+        loginBtn2f.addEventListener("click", async() => {
+         if (a2finput.value == "") {
+                infoLogin2f.innerHTML = "Entrez votre code a2f"
+                return
+            }
+            let azAuth = new AZauth('https://centralcorp.fr');
+
+            await azAuth.getAuth(mailInput.value, passwordInput.value, a2finput.value).then(async account_connect => {
+                console.log(account_connect);
+                if (account_connect.error) {
+                    infoLogin2f.innerHTML = 'Code a2f invalide'
+                    return
+                }
+                let account = {
+                    access_token: account_connect.access_token,
+                    client_token: account_connect.client_token,
+                    uuid: account_connect.uuid,
+                    name: account_connect.name,
+                    user_properties: account_connect.user_properties,
+                    meta: {
+                        type: account_connect.meta.type,
+                        offline: true
+                    }
+                }
+
+                this.database.add(account, 'accounts')
+                this.database.update({ uuid: "1234", selected: account.uuid }, 'accounts-selected');
+
+                addAccount(account)
+                accountSelect(account.uuid)
+                changePanel("home");
+
+                cancelMojangBtn.disabled = false;
+                cancelMojangBtn.click();
+                mailInput.value = "";
+                loginBtn.disabled = false;
+                mailInput.disabled = false;
+                passwordInput.disabled = false;
+                loginBtn.style.display = "block";
+                infoLogin.innerHTML = "&nbsp;";
+            })
+
+            
+
+        })
+
+
 
         loginBtn.addEventListener("click", async() => {
             cancelMojangBtn.disabled = true;
@@ -152,7 +216,18 @@ class Login {
             await azAuth.getAuth(mailInput.value, passwordInput.value).then(async account_connect => {
                 console.log(account_connect);
 
+                if (account_connect.A2F === true) {
+                    document.querySelector('.a2f-card').style.display = "block";
+                    document.querySelector(".login-card-mojang").style.display = "none";
+                    cancelMojangBtn.disabled = false;
+                    console.log("A2F");
+                    return
+
+                }
+               
+
                 if (account_connect.error) {
+       
                     cancelMojangBtn.disabled = false;
                     loginBtn.disabled = false;
                     mailInput.disabled = false;
@@ -160,13 +235,13 @@ class Login {
                     infoLogin.innerHTML = 'Adresse E-mail ou mot de passe invalide'
                     return
                 }
+                cancelMojangBtn.addEventListener("click", () => {
+                    document.querySelector(".login-card").style.display = "block";
+                    document.querySelector(".login-card-mojang").style.display = "none";
+                    document.querySelector('.a2f-card').style.display = "none";
+                })
 
-                // if (!account_connect.A2F) {
-                //     document.querySelector('.a2f-card').style.display = "block";
-                //     document.querySelector(".login-card-mojang").style.display = "none";
-                //     console.log("A2F");
-                //     return
-                // }
+             
 
                 let account = {
                     access_token: account_connect.access_token,
@@ -290,6 +365,7 @@ class Login {
             })
         })
     }
+    
 }
 
 export default Login;
