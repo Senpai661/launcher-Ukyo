@@ -6,10 +6,13 @@
 'use strict';
 
 import { database, changePanel, addAccount, accountSelect } from '../utils.js';
-const { AZauth } = require('minecraft-java-core');
+const { AZauth } = require('minecraft-java-core-riptiaz');
 const { ipcRenderer } = require('electron');
+const pkg = require('../package.json');
+
 
 class Login {
+    
     static id = "login";
     async init(config) {
         this.config = config
@@ -46,7 +49,7 @@ class Login {
         let microsoftBtn = document.querySelector('.microsoft')
         let mojangBtn = document.querySelector('.mojang')
         let cancelBtn = document.querySelector('.cancel-login')
-
+       
         microsoftBtn.addEventListener("click", () => {
             microsoftBtn.disabled = true;
             mojangBtn.disabled = true;
@@ -69,7 +72,9 @@ class Login {
                     meta: {
                         type: account_connect.meta.type,
                         demo: account_connect.meta.demo
-                    }
+                    },
+                    role: account_connect.role,
+                    monnaie: account_connect.monnaie
                 }
 
                 let profile = {
@@ -111,6 +116,17 @@ class Login {
         let a2finput = document.querySelector('.a2f')
         let infoLogin2f = document.querySelector('.info-login-2f')
         let cancel2f = document.querySelector('.cancel-2f')
+        
+        let azauth = pkg.user ? `${pkg.azauth}/${pkg.user}` : pkg.azauth
+        let newuserurl = `${azauth}/user/register`
+        this.newuser = document.querySelector(".new-user");
+        this.newuser.innerHTML="Pas de compte ?"
+        this.newuser.setAttribute ("href", newuserurl)
+
+        let passwordreseturl = `${azauth}/user/password/reset`
+        this.passwordreset = document.querySelector(".password-reset");
+        this.passwordreset.innerHTML="Mot de passe oublié ?"
+        this.passwordreset.setAttribute ("href", passwordreseturl)
 
         mojangBtn.addEventListener("click", () => {
             document.querySelector(".login-card").style.display = "none";
@@ -141,7 +157,8 @@ class Login {
                 infoLogin2f.innerHTML = "Entrez votre code a2f"
                 return
             }
-            let azAuth = new AZauth('https://centralcorp.fr');
+            let azauth = pkg.user ? `${pkg.azauth}/${pkg.user}` : pkg.azauth
+            let azAuth = new AZauth(azauth);
 
             await azAuth.getAuth(mailInput.value, passwordInput.value, a2finput.value).then(async account_connect => {
                 console.log(account_connect);
@@ -158,7 +175,9 @@ class Login {
                     meta: {
                         type: account_connect.meta.type,
                         offline: true
-                    }
+                    },
+                    role: account_connect.role,
+                    monnaie: account_connect.monnaie
                 }
 
                 this.database.add(account, 'accounts')
@@ -210,8 +229,8 @@ class Login {
                 passwordInput.disabled = false;
                 return
             }
-
-            let azAuth = new AZauth('https://centralcorp.fr');
+            let azauth = pkg.user ? `${pkg.azauth}/${pkg.user}` : pkg.azauth
+            let azAuth = new AZauth(azauth);
 
             await azAuth.getAuth(mailInput.value, passwordInput.value).then(async account_connect => {
                 console.log(account_connect);
@@ -220,7 +239,6 @@ class Login {
                     document.querySelector('.a2f-card').style.display = "block";
                     document.querySelector(".login-card-mojang").style.display = "none";
                     cancelMojangBtn.disabled = false;
-                    console.log("A2F");
                     return
 
                 }
@@ -252,11 +270,15 @@ class Login {
                     meta: {
                         type: account_connect.meta.type,
                         offline: true
-                    }
+                    },
+                    role: account_connect.role,
+                    monnaie: account_connect.monnaie
                 }
+                
 
                 this.database.add(account, 'accounts')
                 this.database.update({ uuid: "1234", selected: account.uuid }, 'accounts-selected');
+
 
                 addAccount(account)
                 accountSelect(account.uuid)
@@ -337,7 +359,8 @@ class Login {
                     meta: {
                         type: account_connect.meta.type,
                         offline: account_connect.meta.offline
-                    }
+                    },
+                    role: account_connect.role
                 }
 
                 this.database.add(account, 'accounts')

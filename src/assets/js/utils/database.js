@@ -42,6 +42,9 @@ class database {
                 if (!db.objectStoreNames.contains('screen')) {
                     db.createObjectStore('screen', { keyPath: "key" });
                 }
+                if (!db.objectStoreNames.contains('roles')){
+                    db.createObjectStore('roles', { keyPath: "key"})
+                }
             }
 
             request.onsuccess = (event) => {

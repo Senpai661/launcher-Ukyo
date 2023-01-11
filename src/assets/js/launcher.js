@@ -7,8 +7,10 @@
 
 // libs 
 const fs = require('fs');
-const { Microsoft, Mojang, AZauth } = require('minecraft-java-core');
-const AZAuth = new AZauth('https://centralcorp.fr');
+const { Microsoft, Mojang, AZauth } = require('minecraft-java-core-riptiaz');
+const pkg = require('../package.json');
+let azauth = pkg.user ? `${pkg.azauth}/${pkg.user}` : pkg.azauth
+const AZAuth = new AZauth(azauth);
 const { ipcRenderer } = require('electron');
 
 import { config, logger, changePanel, database, addAccount, accountSelect } from './utils.js';
@@ -27,6 +29,7 @@ class Launcher {
         this.createPanels(Login, Home, Settings);
         this.getaccounts();
     }
+    
 
     initLog() {
         document.addEventListener("keydown", (e) => {
@@ -104,7 +107,9 @@ class Launcher {
                         meta: {
                             type: refresh.meta.type,
                             offline: refresh.meta.offline
-                        }
+                        },
+                        role: refresh.role,
+                        monnaie: refresh.monnaie
                     }
 
                     this.database.update(refresh_accounts, 'accounts');
@@ -132,6 +137,8 @@ class Launcher {
         }
         document.querySelector(".preload-content").style.display = "none";
     }
+    
 }
-
 new Launcher().init();
+
+

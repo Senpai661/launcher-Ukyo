@@ -5,9 +5,9 @@
 
 'use strict';
 
-import { logger, database, changePanel } from '../utils.js';
+import { logger, database, changePanel} from '../utils.js';
 
-const { Launch, Status } = require('minecraft-java-core');
+const { Launch, Status } = require('minecraft-java-core-riptiaz');
 const { ipcRenderer } = require('electron');
 const launch = new Launch();
 const pkg = require('../package.json');
@@ -24,6 +24,7 @@ class Home {
         this.initLaunch();
         this.initStatusServer();
         this.initBtn();
+        this.bkgrole();
     }
 
     async initNews() {
@@ -84,6 +85,59 @@ class Home {
                 </div>`
             // news.appendChild(blockNews);
         }
+    }
+    async bkgrole () {
+        let uuid = (await this.database.get('1234', 'accounts-selected')).value;
+        let account = (await this.database.get(uuid.selected, 'accounts')).value;
+        if (account.role != "Admin") {
+            document.querySelector(".admin-btn").style.display = "none";
+        }
+        
+
+
+        let blockRole = document.createElement("div");
+        blockRole.innerHTML = `
+        <div>${account.role}</div>
+        `
+        document.querySelector('.player-role').appendChild(blockRole);
+
+
+        let blockMonnaie = document.createElement("div");
+        blockMonnaie.innerHTML = `
+        <div>${account.monnaie} pts</div>
+        `
+        document.querySelector('.player-monnaie').appendChild(blockMonnaie);
+
+        let title_changelog = document.createElement("div");
+        title_changelog.innerHTML = `
+        <div>${this.config.changelog_version}</div>
+        `
+        document.querySelector('.title-change').appendChild(title_changelog);
+
+        let bbWrapperChange = document.createElement("div");
+        bbWrapperChange.innerHTML = `
+        <div>${this.config.changelog_new}</div>
+        `
+        document.querySelector('.bbWrapperChange').appendChild(bbWrapperChange);
+
+        let serverimg = document.querySelector('.server-img')
+        serverimg.setAttribute("src", `${this.config.server_img}`)
+
+
+        if (account.role === "Admin") {
+            document.body.style.backgroundImage = `url(${this.config.homeimg_admin}) no-repeat center center scroll`
+        }
+        if (account.role === "VIP") {
+            document.body.style.backgroundImage = `url(${this.config.homeimg_vip}) no-repeat center center scroll`
+        }
+        if (account.role === "Modo") {
+            document.body.style.backgroundImage = `url(${this.config.homeimg_modo}) no-repeat center center scroll`
+        }
+        if (account.role === "Membre") {
+            document.body.style.backgroundImage = `url(${this.config.homeimg_member}) no-repeat center center scroll`
+        }
+        
+       
     }
 
     async initLaunch() {
@@ -179,23 +233,28 @@ class Home {
         let serverMs = document.querySelector('.server-text .desc');
         let playersConnected = document.querySelector('.etat-text .text');
         let online = document.querySelector(".etat-text .online");
-        let serverPing = await new Status("game.centralcorp.fr", "25565").getStatus();
+        let serverPing = await new Status(this.config.status.ip, this.config.status.port).getStatus();
 
-        if (serverPing.error) {
+        if (!serverPing.error) {
             nameServer.textContent = this.config.status.nameServer;
-            serverMs.innerHTML = `<span class="green">En bêta</span>`;
+            serverMs.innerHTML = `<span class="green">En ligne</span> - ${serverPing.ms}ms`;
             online.classList.toggle("off");
             playersConnected.textContent = serverPing.playersConnect;
         } else if (serverPing.error) {
             nameServer.textContent = 'Serveur indisponible';
-            serverMs.innerHTML = `<span class="green">Hors ligne</span>`;
+            serverMs.innerHTML = `<span class="red">Hors ligne</span>`;
         }
     }
 
     initBtn() {
+        let azauth = pkg.user ? `${pkg.azauth}/${pkg.user}` : pkg.azauth
         document.querySelector('.settings-btn').addEventListener('click', () => {
             changePanel('settings');
         });
+        document.querySelector('.admin-btn').addEventListener('click', () => {
+            const { shell } = require('electron')
+            shell.openExternal(`${azauth}/admin`)
+        })
     }
 
     async getdate(e) {

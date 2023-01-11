@@ -109,4 +109,5 @@ document.addEventListener("keydown", (e) => {
         ipcRenderer.send("update-window-dev-tools");
     }
 })
+
 new Splash();

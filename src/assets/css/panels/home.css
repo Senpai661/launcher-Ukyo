@@ -9,6 +9,13 @@
     display: flex;
 }
 
+.home-img {
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    background: linear-gradient(#00000066, #00000066), black no-repeat center center scroll;
+}
+
 .player-head {
     margin: auto 30px;
     background-image: url("../../images/default/setve.png");
@@ -38,6 +45,22 @@
     border-radius: 15px;
     transition: all 0.5s cubic-bezier(1, 0.46, 0, 1.29);
 }
+.admin-btn {
+    position: absolute;
+    top: 10px;
+    right: 100px;
+    text-align: center;
+    height: 50px;
+    border: none;
+    border-radius: 15px;
+    transition: all 0.5s cubic-bezier(1, 0.46, 0, 1.29);
+}
+
+.admin-btn:hover {
+    border-radius: 5px;
+    transition: all 0.5s cubic-bezier(1, 0.46, 0, 1.29);
+    cursor: pointer;
+}
 
 .settings-btn:hover {
     border-radius: 5px;
@@ -47,6 +70,34 @@
 
 .icon-settings:before {
     font-size: 40px;
+}
+.icon-admin:before {
+    font-size: 40px;
+}
+
+.player-role {
+    position: absolute;
+    left: 100px;
+    margin-top: 15px;
+    font: normal normal bold 24px/35px Poppins;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 29ch;
+    pointer-events: none;
+    color:#E1E1E1
+}
+.player-monnaie {
+    position: absolute;
+    left: 200px;
+    margin-top: 15px;
+    font: normal normal bold 24px/35px Poppins;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 29ch;
+    pointer-events: none;
+    color:#E1E1E1
 }
 
 .play-element {
@@ -147,6 +198,26 @@
 }
 
 .title {
+    position: absolute;
+    font: normal normal bold 27px/40px Poppins;
+    letter-spacing: 0px;
+    color: #E1E1E1;
+    display: flex;
+    position: absolute;
+    text-decoration: none;
+    max-width: calc(100% - 158px);
+    font-weight: 600;
+    font-size: 18px;
+    top: 50%;
+    left: 30px;
+    transform: translate(0, -50%);
+    overflow: hidden;
+    line-height: 25px;
+    align-items: center;
+    height: 3em;
+    transition: color .2s;
+}
+.title-change {
     position: absolute;
     font: normal normal bold 27px/40px Poppins;
     letter-spacing: 0px;
@@ -300,7 +371,7 @@
 }
 
 .red {
-    color: #1AC707;
+    color: #c70707;
 }
 
 .etat-text {
@@ -338,5 +409,5 @@
 }
 
 .online.off {
-    background-color: #1AC707;
+    background-color: #c70707;
 }

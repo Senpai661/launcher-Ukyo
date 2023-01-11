@@ -7,9 +7,11 @@ const pkg = require('../package.json');
 const fetch = require("node-fetch")
 const convert = require("xml-js")
 let url = pkg.user ? `${pkg.url}/${pkg.user}` : pkg.url
+let azauth = pkg.user ? `${pkg.azauth}/${pkg.user}` : pkg.azauth
 
 let config = `${url}/launcher/config-launcher/config.json`;
-let news = `https://centralcorp.fr/api/rss`;
+let news = `${azauth}/api/rss`
+
 
 class Config {
     GetConfig() {
@@ -21,8 +23,9 @@ class Config {
             })
         })
     }
-
     async GetNews() {
+
+       
         let rss = await fetch(news).then(res => res.text());
         let rssparse = JSON.parse(convert.xml2json(rss, { compact: true }));
         let data = [];
