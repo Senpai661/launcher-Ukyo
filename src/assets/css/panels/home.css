@@ -76,8 +76,8 @@
 }
 
 .player-role {
-    position: absolute;
     left: 100px;
+    margin: auto;
     margin-top: 15px;
     font: normal normal bold 24px/35px Poppins;
     text-overflow: ellipsis;
@@ -88,8 +88,8 @@
     color:#E1E1E1
 }
 .player-monnaie {
-    position: absolute;
-    left: 200px;
+    float: left;
+    margin: auto;
     margin-top: 15px;
     font: normal normal bold 24px/35px Poppins;
     text-overflow: ellipsis;

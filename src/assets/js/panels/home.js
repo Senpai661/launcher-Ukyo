@@ -89,7 +89,7 @@ class Home {
     async bkgrole () {
         let uuid = (await this.database.get('1234', 'accounts-selected')).value;
         let account = (await this.database.get(uuid.selected, 'accounts')).value;
-        if (account.role != "Admin") {
+        if (account.role != "Admin" ?? "Fondateur" ?? "Responsable Modo") {
             document.querySelector(".admin-btn").style.display = "none";
         }
         
@@ -100,6 +100,9 @@ class Home {
         <div>${account.role}</div>
         `
         document.querySelector('.player-role').appendChild(blockRole);
+        if(!account.role) {
+            document.querySelector(".player-role").style.display = "none";
+        }
 
 
         let blockMonnaie = document.createElement("div");
@@ -107,34 +110,58 @@ class Home {
         <div>${account.monnaie} pts</div>
         `
         document.querySelector('.player-monnaie').appendChild(blockMonnaie);
+        if(account.monnaie === "undefined") {
+            document.querySelector(".player-monnaie").style.display = "none";
+        }
 
         let title_changelog = document.createElement("div");
         title_changelog.innerHTML = `
         <div>${this.config.changelog_version}</div>
         `
         document.querySelector('.title-change').appendChild(title_changelog);
+        if(!this.config.changelog_version) {
+            document.querySelector(".title-change").style.display = "none";
+        }
 
         let bbWrapperChange = document.createElement("div");
         bbWrapperChange.innerHTML = `
         <div>${this.config.changelog_new}</div>
         `
         document.querySelector('.bbWrapperChange').appendChild(bbWrapperChange);
+        if(!this.config.changelog_new) {
+            document.querySelector(".bbWrapperChange").style.display = "none";
+        }
 
         let serverimg = document.querySelector('.server-img')
         serverimg.setAttribute("src", `${this.config.server_img}`)
+        if(!this.config.server_img) {
+            serverimg.style.display = "none";
+        }
 
 
-        if (account.role === "Admin") {
-            document.body.style.backgroundImage = `url(${this.config.homeimg_admin}) no-repeat center center scroll`
-        }
-        if (account.role === "VIP") {
-            document.body.style.backgroundImage = `url(${this.config.homeimg_vip}) no-repeat center center scroll`
-        }
-        if (account.role === "Modo") {
-            document.body.style.backgroundImage = `url(${this.config.homeimg_modo}) no-repeat center center scroll`
+        if (account.role === "Responsable Modo") {
+            document.body.style.background = `linear-gradient(#00000066, #00000066) url(${this.config.homeimg_respmodo}) black no-repeat center center scroll`
         }
         if (account.role === "Membre") {
-            document.body.style.backgroundImage = `url(${this.config.homeimg_member}) no-repeat center center scroll`
+            document.body.style.background = `linear-gradient(#00000066, #00000066) url(${this.config.homeimg_member}) black no-repeat center center scroll`
+        }
+        if (account.role === "Fondateur") {
+            document.body.style.background = `linear-gradient(#00000066, #00000066) url(${this.config.homeimg_fonda}) black no-repeat center center scroll`
+        }
+        if (account.role === "Dev") {
+            document.body.style.background = `linear-gradient(#00000066, #00000066), url("${this.config.homeimg_dev}") black no-repeat center center scroll`
+        }
+        if (account.role === "Admin") {
+            document.body.style.background = `linear-gradient(#00000066, #00000066) url(${this.config.homeimg_admin}) black no-repeat center center scroll`
+        }
+        if (account.role === "Helper") {
+            document.body.style.background = `linear-gradient(#00000066, #00000066) url(${this.config.homeimg_helper}) black no-repeat center center scroll`
+        }
+        if (account.role === "Modo") {
+            document.body.style.background = `linear-gradient(#00000066, #00000066) url(${this.config.homeimg_modo}) black no-repeat center center scroll`
+        }
+        if (account.role === "VIP") {
+            document.body.style.background = `linear-gradient(#00000066, #00000066) url(${this.config.homeimg_vip})  black no-repeat center center scroll`
         }
         
        
