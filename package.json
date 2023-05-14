@@ -1,12 +1,12 @@
 {
-    "name": "CentralCorp",
-    "preductname": "CentralCorp Launcher",
-    "version": "2.1.9",
-    "description": "CentralCorp modded server launcher",
+    "name": "Arthania",
+    "preductname": "Arthania Launcher",
+    "version": "2.2.0",
+    "description": "Arthania modded server launcher",
     "main": "src/app.js",
     "author": "Luuxis/Riptiaz",
     "url": "http://129.151.251.180",
-    "azauth": "https://centralcorp.fr",
+    "azauth": "https://arthania.fr",
     "engines": {
         "node": "16.x.x"
     },
@@ -36,6 +36,6 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/Riptiaz/CentralCorp-Launcher.git"
+        "url": "git+https://github.com/Riptiaz/Arthania-Launcher.git"
     }
 }
