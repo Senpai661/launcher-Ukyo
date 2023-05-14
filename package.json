@@ -1,7 +1,7 @@
 {
     "name": "Arthania",
     "preductname": "Arthania Launcher",
-    "version": "2.2.0",
+    "version": "2.2.1",
     "description": "Arthania modded server launcher",
     "main": "src/app.js",
     "author": "Luuxis/Riptiaz",
