@@ -7,7 +7,7 @@
 
 // libs 
 const fs = require('fs');
-const { Microsoft, Mojang, AZauth } = require('minecraft-java-core-riptiaz');
+const { Microsoft, Mojang, AZauth } = require('minecraft-java-core');
 const pkg = require('../package.json');
 let azauth = pkg.user ? `${pkg.azauth}/${pkg.user}` : pkg.azauth
 const AZAuth = new AZauth(azauth);

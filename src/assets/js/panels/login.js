@@ -6,7 +6,7 @@
 'use strict';
 
 import { database, changePanel, addAccount, accountSelect } from '../utils.js';
-const { AZauth } = require('minecraft-java-core-riptiaz');
+const { AZauth } = require('minecraft-java-core');
 const { ipcRenderer } = require('electron');
 const pkg = require('../package.json');
 
@@ -73,8 +73,10 @@ class Login {
                         type: account_connect.meta.type,
                         demo: account_connect.meta.demo
                     },
-                    role: account_connect.role,
-                    monnaie: account_connect.monnaie
+                    user_info: {
+                        role: account_connect.user_info.role,
+                        monnaie: account_connect.user_info.money,
+                    },
                 }
 
                 let profile = {
@@ -160,7 +162,7 @@ class Login {
             let azauth = pkg.user ? `${pkg.azauth}/${pkg.user}` : pkg.azauth
             let azAuth = new AZauth(azauth);
 
-            await azAuth.getAuth(mailInput.value, passwordInput.value, a2finput.value).then(async account_connect => {
+            await azAuth.login(mailInput.value, passwordInput.value, a2finput.value).then(async account_connect => {
                 console.log(account_connect);
                 if (account_connect.error) {
                     infoLogin2f.innerHTML = 'Code a2f invalide'
@@ -176,8 +178,12 @@ class Login {
                         type: account_connect.meta.type,
                         offline: true
                     },
-                    role: account_connect.role,
-                    monnaie: account_connect.monnaie
+                    user_info: {
+                        role: account_connect.user_info.role,
+                        monnaie: account_connect.user_info.money,
+                    },
+                    
+                    
                 }
 
                 this.database.add(account, 'accounts')
@@ -232,7 +238,7 @@ class Login {
             let azauth = pkg.user ? `${pkg.azauth}/${pkg.user}` : pkg.azauth
             let azAuth = new AZauth(azauth);
 
-            await azAuth.getAuth(mailInput.value, passwordInput.value).then(async account_connect => {
+            await azAuth.login(mailInput.value, passwordInput.value).then(async account_connect => {
                 console.log(account_connect);
 
                 if (account_connect.A2F === true) {
@@ -271,8 +277,12 @@ class Login {
                         type: account_connect.meta.type,
                         offline: true
                     },
-                    role: account_connect.role,
-                    monnaie: account_connect.monnaie
+                    user_info: {
+                        role: account_connect.user_info.role,
+                        monnaie: account_connect.user_info.money,
+                    },
+                    
+                    
                 }
                 
 
@@ -360,7 +370,6 @@ class Login {
                         type: account_connect.meta.type,
                         offline: account_connect.meta.offline
                     },
-                    role: account_connect.role
                 }
 
                 this.database.add(account, 'accounts')

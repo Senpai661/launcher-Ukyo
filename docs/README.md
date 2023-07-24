@@ -1,4 +1,4 @@
-<p><strong><em><span style="text-decoration: underline;">Arthania Launcher est un fork du Selvania-Launcher prennant en charge &agrave; 100% la liaison avec Azuriom</span></em></strong></p>
+<p><strong><em><span style="text-decoration: underline;">CentralCorp Launcher est un fork du Selvania-Launcher prennant en charge &agrave; 100% la liaison avec Azuriom</span></em></strong></p>
 <p><span style="text-decoration: underline;"><em>Comment configurer ce launcher ?</em></span></p>
 <p>1) Il faut fork ce projet. Ensuite il faut le clone avec git ou github desktop.</p>
 <p>2) Allez ensuite dans le fichier package.json et modifer les lignes suivantes: "name" et "<span style="font-size: 14.4px;">preductname</span><span style="font-size: 0.9em;">" avec le nom du launcher, ""version" avec la version, "description" avec la description, "author" avec l'auteur (merci de laisser Luuxis/Riptiaz et de rajouter votre pseudo), "url" avec l'url de votre webfolder, "azauth" avec l'url de votre site azuriom.</span></p>

@@ -35,17 +35,8 @@
     transition: all 0.5s cubic-bezier(1, 0.46, 0, 1.29);
 }
 
+.admin-btn,
 .settings-btn {
-    position: absolute;
-    top: 10px;
-    right: 30px;
-    text-align: center;
-    height: 50px;
-    border: none;
-    border-radius: 15px;
-    transition: all 0.5s cubic-bezier(1, 0.46, 0, 1.29);
-}
-.admin-btn {
     position: absolute;
     top: 10px;
     right: 100px;
@@ -56,11 +47,35 @@
     transition: all 0.5s cubic-bezier(1, 0.46, 0, 1.29);
 }
 
-.admin-btn:hover {
+/* Hover styles for .admin-btn */
+.admin-btn:hover,
+.settings-btn:hover {
     border-radius: 5px;
-    transition: all 0.5s cubic-bezier(1, 0.46, 0, 1.29);
     cursor: pointer;
 }
+
+@media (min-width: 768px) {
+    .admin-btn {
+        right: 100px;
+    }
+    .settings-btn {
+        right: 30px;
+    }
+}
+
+
+@media (max-width: 767px) {
+    .admin-btn,
+    .settings-btn {
+        position: static;
+        width: 160px;
+        margin: 15px auto;
+        border-radius: 20px;
+    }
+}
+
+
+
 
 .settings-btn:hover {
     border-radius: 5px;
@@ -75,30 +90,50 @@
     font-size: 40px;
 }
 
-.player-role {
-    left: 100px;
-    margin: auto;
-    margin-top: 15px;
-    font: normal normal bold 24px/35px Poppins;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    max-width: 29ch;
-    pointer-events: none;
-    color:#E1E1E1
-}
+/* Autres styles CSS... */
+
+/* Styles pour .player-role et .player-monnaie */
+.player-role,
 .player-monnaie {
-    float: left;
-    margin: auto;
-    margin-top: 15px;
     font: normal normal bold 24px/35px Poppins;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
     max-width: 29ch;
     pointer-events: none;
-    color:#E1E1E1
+    color: #E1E1E1;
+    margin: auto 15px; /* Ajouter une marge pour l'espacement entre les éléments */
 }
+
+/* Styles pour les écrans plus larges */
+@media (min-width: 768px) {
+    .player-role {
+        left: 100px; /* Positionner le texte du rôle à 100px à gauche après le "skin" */
+        float: left; /* Aligner le texte du rôle à gauche après le "skin" */
+        max-width: none; /* Supprimer la limite de largeur pour le texte du rôle */
+    }
+
+    .player-monnaie {
+        left: 100px; /* Positionner le texte des points à 100px à gauche après le "skin" */
+        float: left; /* Aligner le texte des points à gauche après le "skin" */
+        max-width: none; /* Supprimer la limite de largeur pour le texte des points */
+    }
+}
+
+/* Styles pour les écrans plus petits */
+@media (max-width: 767px) {
+    .player-role,
+    .player-monnaie {
+        left: 0; /* Réinitialiser la position à gauche pour les écrans plus petits */
+        float: none; /* Réinitialiser le flottement pour les écrans plus petits */
+        text-align: left; /* Aligner le texte à gauche sur les écrans plus petits */
+        max-width: 100%; /* Permettre aux textes de prendre toute la largeur sur les écrans plus petits */
+        margin: 5px 0; /* Ajouter un espacement de 10px au-dessus et en dessous des textes pour la lisibilité */
+    }
+}
+
+/* Autres styles CSS... */
+
 
 .play-element {
     position: absolute;
@@ -322,10 +357,8 @@
 
 .bbWrapperChange {
     position: relative;
-    height: 300px;
     padding: 20px;
     background-color: #1f1f1f;
-    word-wrap: normal;
     font-family: Poppins;
     font-size: 13px !important;
     color: #E1E1E1;

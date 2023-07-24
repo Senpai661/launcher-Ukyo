@@ -7,7 +7,7 @@
 
 import { logger, database, changePanel} from '../utils.js';
 
-const { Launch, Status } = require('minecraft-java-core-riptiaz');
+const { Launch, Status } = require('minecraft-java-core');
 const { ipcRenderer } = require('electron');
 const launch = new Launch();
 const pkg = require('../package.json');
@@ -85,35 +85,6 @@ class Home {
                 </div>`
             // news.appendChild(blockNews);
         }
-    }
-    async bkgrole () {
-        let uuid = (await this.database.get('1234', 'accounts-selected')).value;
-        let account = (await this.database.get(uuid.selected, 'accounts')).value;
-        if (account.role != "Admin" ?? "Fondateur" ?? "Responsable Modo") {
-            document.querySelector(".admin-btn").style.display = "none";
-        }
-        
-
-
-        let blockRole = document.createElement("div");
-        blockRole.innerHTML = `
-        <div>${account.role}</div>
-        `
-        document.querySelector('.player-role').appendChild(blockRole);
-        if(!account.role) {
-            document.querySelector(".player-role").style.display = "none";
-        }
-
-
-        let blockMonnaie = document.createElement("div");
-        blockMonnaie.innerHTML = `
-        <div>${account.monnaie} pts</div>
-        `
-        document.querySelector('.player-monnaie').appendChild(blockMonnaie);
-        if(account.monnaie === "undefined") {
-            document.querySelector(".player-monnaie").style.display = "none";
-        }
-
         let title_changelog = document.createElement("div");
         title_changelog.innerHTML = `
         <div>${this.config.changelog_version}</div>
@@ -131,12 +102,48 @@ class Home {
         if(!this.config.changelog_new) {
             document.querySelector(".bbWrapperChange").style.display = "none";
         }
-
         let serverimg = document.querySelector('.server-img')
         serverimg.setAttribute("src", `${this.config.server_img}`)
         if(!this.config.server_img) {
             serverimg.style.display = "none";
         }
+    }
+    
+    async bkgrole () {
+        let uuid = (await this.database.get('1234', 'accounts-selected')).value;
+        let account = (await this.database.get(uuid.selected, 'accounts')).value;
+        
+        if (!account.user_info.role.name) {
+            document.querySelector(".admin-btn").style.display = "none";
+        }
+        if (account.user_info.role.name != "Admin" ?? "Fondateur" ?? "Responsable Modo") {
+            document.querySelector(".admin-btn").style.display = "none";
+        }
+        
+
+
+        let blockRole = document.createElement("div");
+        blockRole.innerHTML = `
+        <div>${account.user_info.role.name}</div>
+        `
+        document.querySelector('.player-role').appendChild(blockRole);
+        if(!account.user_info.role) {
+            document.querySelector(".player-role").style.display = "none";
+        }
+
+
+        let blockMonnaie = document.createElement("div");
+        blockMonnaie.innerHTML = `
+        <div>${account.user_info.monnaie} pts</div>
+        `
+        document.querySelector('.player-monnaie').appendChild(blockMonnaie);
+        if(account.user_info.monnaie === "undefined") {
+            document.querySelector(".player-monnaie").style.display = "none";
+        }
+
+        
+
+        
 
 
         if (account.role === "Responsable Modo") {
@@ -195,16 +202,22 @@ class Home {
             let opts = {
                 url: this.config.game_url === "" || this.config.game_url === undefined ? `${urlpkg}/files` : this.config.game_url,
                 authenticator: account,
+                timeout: 10000,
                 path: `${dataDirectory}/${process.platform == 'darwin' ? this.config.dataDirectory : `.${this.config.dataDirectory}`}`,
                 version: this.config.game_version,
                 detached: launcherSettings.launcher.close === 'close-all' ? false : true,
-                java: this.config.java,
-                javapath: javaPath.path,
-                args: [...javaArgs.args, ...this.config.game_args],
-                screen,
-                modde: this.config.modde,
+                downloadFileMultiple: 30,
+                loader: {
+                    type: this.config.loader.type,
+                    build: this.config.loader.build,
+                    enable: this.config.loader.enable,
+                },
+                
+
                 verify: this.config.verify,
                 ignored: this.config.ignored,
+
+                java: this.config.java,
                 memory: {
                     min: `${ram.ramMin * 1024}M`,
                     max: `${ram.ramMax * 1024}M`
@@ -215,35 +228,51 @@ class Home {
             info.style.display = "block"
             launch.Launch(opts);
 
-            launch.on('progress', (DL, totDL) => {
+            launch.on('extract', extract => {
+                console.log(extract);
+            });
+
+            launch.on('progress', (progress, size) => {
                 progressBar.style.display = "block"
-                document.querySelector(".text-download").innerHTML = `Téléchargement ${((DL / totDL) * 100).toFixed(0)}%`
-                ipcRenderer.send('main-window-progress', { DL, totDL })
-                progressBar.value = DL;
-                progressBar.max = totDL;
+                document.querySelector(".text-download").innerHTML = `Téléchargement ${((progress / size) * 100).toFixed(0)}%`
+                ipcRenderer.send('main-window-progress', { progress, size })
+                progressBar.value = progress;
+                progressBar.max = size;
+            });
+
+            launch.on('check', (progress, size) => {
+                progressBar.style.display = "block"
+                document.querySelector(".text-download").innerHTML = `Vérification ${((progress / size) * 100).toFixed(0)}%`
+                progressBar.value = progress;
+                progressBar.max = size;
+            });
+
+            launch.on('estimated', (time) => {
+                let hours = Math.floor(time / 3600);
+                let minutes = Math.floor((time - hours * 3600) / 60);
+                let seconds = Math.floor(time - hours * 3600 - minutes * 60);
+                console.log(`${hours}h ${minutes}m ${seconds}s`);
             })
 
             launch.on('speed', (speed) => {
                 console.log(`${(speed / 1067008).toFixed(2)} Mb/s`)
             })
 
-            launch.on('check', (e) => {
-                progressBar.style.display = "block"
-                document.querySelector(".text-download").innerHTML = `Vérification ${((DL / totDL) * 100).toFixed(0)}%`
-                progressBar.value = DL;
-                progressBar.max = totDL;
-
-            })
+            launch.on('patch', patch => {
+                console.log(patch);
+                info.innerHTML = `Patch en cours...`
+            });
 
             launch.on('data', (e) => {
                 new logger('Minecraft', '#36b030');
                 if (launcherSettings.launcher.close === 'close-launcher') ipcRenderer.send("main-window-hide");
+                ipcRenderer.send('main-window-progress-reset')
                 progressBar.style.display = "none"
                 info.innerHTML = `Demarrage en cours...`
                 console.log(e);
             })
 
-            launch.on('close', () => {
+            launch.on('close', code => {
                 if (launcherSettings.launcher.close === 'close-launcher') ipcRenderer.send("main-window-show");
                 progressBar.style.display = "none"
                 info.style.display = "none"
@@ -251,7 +280,11 @@ class Home {
                 info.innerHTML = `Vérification`
                 new logger('Launcher', '#7289da');
                 console.log('Close');
-            })
+            });
+
+            launch.on('error', err => {
+                console.log(err);
+            });
         })
     }
 
