@@ -249,16 +249,15 @@ class Login {
 
                 }
                
-
-                if (account_connect.error) {
-       
+                if (account_connect.reason === 'user_banned') {
                     cancelMojangBtn.disabled = false;
                     loginBtn.disabled = false;
                     mailInput.disabled = false;
                     passwordInput.disabled = false;
-                    infoLogin.innerHTML = 'Adresse E-mail ou mot de passe invalide'
+                    infoLogin.innerHTML = 'Votre compte est banni'
                     return
                 }
+                
                 cancelMojangBtn.addEventListener("click", () => {
                     document.querySelector(".login-card").style.display = "block";
                     document.querySelector(".login-card-mojang").style.display = "none";
