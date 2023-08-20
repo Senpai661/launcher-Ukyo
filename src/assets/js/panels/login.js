@@ -64,7 +64,7 @@ class Login {
 
                 let account = {
                     access_token: account_connect.access_token,
-                    client_token: account_connect.client_token,
+                    client_token: account_connect.uuid,
                     uuid: account_connect.uuid,
                     name: account_connect.name,
                     refresh_token: account_connect.refresh_token,
@@ -170,7 +170,7 @@ class Login {
                 }
                 let account = {
                     access_token: account_connect.access_token,
-                    client_token: account_connect.client_token,
+                    client_token: account_connect.uuid,
                     uuid: account_connect.uuid,
                     name: account_connect.name,
                     user_properties: account_connect.user_properties,
@@ -269,7 +269,7 @@ class Login {
 
                 let account = {
                     access_token: account_connect.access_token,
-                    client_token: account_connect.client_token,
+                    client_token: account_connect.uuid,
                     uuid: account_connect.uuid,
                     name: account_connect.name,
                     user_properties: account_connect.user_properties,
@@ -362,7 +362,7 @@ class Login {
             Mojang.getAuth(mailInput.value, passwordInput.value).then(async account_connect => {
                 let account = {
                     access_token: account_connect.access_token,
-                    client_token: account_connect.client_token,
+                    client_token: account_connect.uuid,
                     uuid: account_connect.uuid,
                     name: account_connect.name,
                     user_properties: account_connect.user_properties,

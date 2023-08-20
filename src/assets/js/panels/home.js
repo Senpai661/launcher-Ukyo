@@ -113,7 +113,7 @@ class Home {
         let uuid = (await this.database.get('1234', 'accounts-selected')).value;
         let account = (await this.database.get(uuid.selected, 'accounts')).value;
         
-        if (!account.user_info.role.name) {
+        if (!account.user_info.role) {
             document.querySelector(".admin-btn").style.display = "none";
         }
         if (account.user_info.role.name != "Admin" ?? "Fondateur" ?? "Responsable Modo") {
@@ -146,28 +146,28 @@ class Home {
         
 
 
-        if (account.role === "Responsable Modo") {
+        if (account.user_info.role.name === "Responsable Modo") {
             document.body.style.background = `linear-gradient(#00000066, #00000066) url(${this.config.homeimg_respmodo}) black no-repeat center center scroll`
         }
-        if (account.role === "Membre") {
+        if (account.user_info.role.name === "Membre") {
             document.body.style.background = `linear-gradient(#00000066, #00000066) url(${this.config.homeimg_member}) black no-repeat center center scroll`
         }
-        if (account.role === "Fondateur") {
+        if (account.user_info.role.name === "Fondateur") {
             document.body.style.background = `linear-gradient(#00000066, #00000066) url(${this.config.homeimg_fonda}) black no-repeat center center scroll`
         }
-        if (account.role === "Dev") {
+        if (account.user_info.role.name === "Dev") {
             document.body.style.background = `linear-gradient(#00000066, #00000066), url("${this.config.homeimg_dev}") black no-repeat center center scroll`
         }
-        if (account.role === "Admin") {
+        if (account.user_info.role.name === "Admin") {
             document.body.style.background = `linear-gradient(#00000066, #00000066) url(${this.config.homeimg_admin}) black no-repeat center center scroll`
         }
-        if (account.role === "Helper") {
+        if (account.user_info.role.name === "Helper") {
             document.body.style.background = `linear-gradient(#00000066, #00000066) url(${this.config.homeimg_helper}) black no-repeat center center scroll`
         }
-        if (account.role === "Modo") {
+        if (account.user_info.role.name === "Modo") {
             document.body.style.background = `linear-gradient(#00000066, #00000066) url(${this.config.homeimg_modo}) black no-repeat center center scroll`
         }
-        if (account.role === "VIP") {
+        if (account.user_info.role.name === "VIP") {
             document.body.style.background = `linear-gradient(#00000066, #00000066) url(${this.config.homeimg_vip})  black no-repeat center center scroll`
         }
         
