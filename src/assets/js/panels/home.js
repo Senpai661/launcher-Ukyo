@@ -113,30 +113,38 @@ class Home {
         let uuid = (await this.database.get('1234', 'accounts-selected')).value;
         let account = (await this.database.get(uuid.selected, 'accounts')).value;
         
-        if (!account.user_info.role) {
+        if (!account.user_info.role.name) {
             document.querySelector(".admin-btn").style.display = "none";
         }
         if (account.user_info.role.name != "Admin" ?? "Fondateur" ?? "Responsable Modo") {
+            document.querySelector(".admin-btn").style.display = "none";
+        }
+        if (account.user_info.role.name === "undefined") {
             document.querySelector(".admin-btn").style.display = "none";
         }
         
 
 
         let blockRole = document.createElement("div");
+        if (this.config.role === true) {
+
         blockRole.innerHTML = `
-        <div>${account.user_info.role.name}</div>
+        <div>Grade: ${account.user_info.role.name}</div>
         `
         document.querySelector('.player-role').appendChild(blockRole);
+        }
         if(!account.user_info.role) {
             document.querySelector(".player-role").style.display = "none";
         }
 
 
         let blockMonnaie = document.createElement("div");
+        if (this.config.money === true) {
         blockMonnaie.innerHTML = `
         <div>${account.user_info.monnaie} pts</div>
         `
         document.querySelector('.player-monnaie').appendChild(blockMonnaie);
+        }
         if(account.user_info.monnaie === "undefined") {
             document.querySelector(".player-monnaie").style.display = "none";
         }
@@ -307,13 +315,13 @@ class Home {
     }
 
     initBtn() {
-        let azauth = pkg.user ? `${pkg.azauth}/${pkg.user}` : pkg.azauth
+        let settings_url = pkg.user ? `${pkg.settings}/${pkg.user}` : pkg.settings
         document.querySelector('.settings-btn').addEventListener('click', () => {
             changePanel('settings');
         });
         document.querySelector('.admin-btn').addEventListener('click', () => {
             const { shell } = require('electron')
-            shell.openExternal(`${azauth}/admin`)
+            shell.openExternal(`${settings_url}/`)
         })
     }
 
