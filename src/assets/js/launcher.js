@@ -9,8 +9,6 @@
 const fs = require('fs');
 const { Microsoft, Mojang, AZauth } = require('minecraft-java-core');
 const pkg = require('../package.json');
-let azauth = pkg.user ? `${pkg.azauth}/${pkg.user}` : pkg.azauth
-const AZAuth = new AZauth(azauth);
 const { ipcRenderer } = require('electron');
 
 import { config, logger, changePanel, database, addAccount, accountSelect } from './utils.js';
@@ -77,6 +75,8 @@ class Launcher {
     }
 
     async getaccounts() {
+        let azauth = this.config.azauth
+        const AZAuth = new AZauth(azauth);
         let accounts = await this.database.getAll('accounts');
         let selectaccount = (await this.database.get('1234', 'accounts-selected'))?.value?.selected;
 

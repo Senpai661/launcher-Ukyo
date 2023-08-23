@@ -6,12 +6,10 @@
 const pkg = require('../package.json');
 const fetch = require("node-fetch")
 const convert = require("xml-js")
-let url = pkg.user ? `${pkg.url}/${pkg.user}` : pkg.url
-let azauth = pkg.user ? `${pkg.azauth}/${pkg.user}` : pkg.azauth
 let settings_url = pkg.user ? `${pkg.settings}/${pkg.user}` : pkg.settings
 
 let config = `${settings_url}/utils/api`;
-let news = `${azauth}/api/rss`
+
 
 
 class Config {
@@ -25,6 +23,8 @@ class Config {
         })
     }
     async GetNews() {
+        this.config = await this.GetConfig().then(res => res);
+        let news = `${this.config.azauth}/api/rss`
         let rss = await fetch(news).then(res => res.text());
         let rssparse = JSON.parse(convert.xml2json(rss, { compact: true }));
         let data = [];

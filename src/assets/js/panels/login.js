@@ -119,7 +119,7 @@ class Login {
         let infoLogin2f = document.querySelector('.info-login-2f')
         let cancel2f = document.querySelector('.cancel-2f')
         
-        let azauth = pkg.user ? `${pkg.azauth}/${pkg.user}` : pkg.azauth
+        let azauth = this.config.azauth
         let newuserurl = `${azauth}/user/register`
         this.newuser = document.querySelector(".new-user");
         this.newuser.innerHTML="Pas de compte ?"
