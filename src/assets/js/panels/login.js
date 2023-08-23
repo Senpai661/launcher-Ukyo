@@ -159,7 +159,6 @@ class Login {
                 infoLogin2f.innerHTML = "Entrez votre code a2f"
                 return
             }
-            let azauth = pkg.user ? `${pkg.azauth}/${pkg.user}` : pkg.azauth
             let azAuth = new AZauth(azauth);
 
             await azAuth.login(mailInput.value, passwordInput.value, a2finput.value).then(async account_connect => {
@@ -235,7 +234,6 @@ class Login {
                 passwordInput.disabled = false;
                 return
             }
-            let azauth = pkg.user ? `${pkg.azauth}/${pkg.user}` : pkg.azauth
             let azAuth = new AZauth(azauth);
 
             await azAuth.login(mailInput.value, passwordInput.value).then(async account_connect => {

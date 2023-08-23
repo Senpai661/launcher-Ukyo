@@ -31,4 +31,4 @@ Un launcher entièrement synchronisé avec votre site Azuriom et entièrement pe
 - Assurez-vous de renseigner les URL de votre site Azuriom et de votre serveur FTP dans le panel.
 
 ## Besoin d'Aide ?
-Si vous avez besoin d'assistance ou des questions, n'hésitez pas à nous rejoindre sur notre Discord [lien Discord](https://discord.gg/VCmNXHvf77). Nous serons ravis de vous aider !
+Si vous avez besoin d'assistance ou des questions, n'hésitez pas à nous rejoindre sur notre [Discord](https://discord.gg/VCmNXHvf77). Nous serons ravis de vous aider !
