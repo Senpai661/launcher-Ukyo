@@ -114,7 +114,7 @@ class Home {
         let account = (await this.database.get(uuid.selected, 'accounts')).value;
         
         let blockRole = document.createElement("div");
-        if (this.config.role === true) {
+        if (this.config.role === true && account.user_info.role) {
 
         blockRole.innerHTML = `
         <div>Grade: ${account.user_info.role.name}</div>
