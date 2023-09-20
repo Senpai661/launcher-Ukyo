@@ -136,35 +136,38 @@ class Home {
         if(account.user_info.monnaie === "undefined") {
             document.querySelector(".player-monnaie").style.display = "none";
         }
-
+        if (this.config.whitelist_activate === true) {
+        if (!this.config.whitelist.includes(account.name)) {
+            document.querySelector(".play-btn").style.backgroundColor = "#696969"; // Couleur de fond grise
+            document.querySelector(".play-btn").style.pointerEvents = "none"; // Désactiver les événements de souris
+            document.querySelector(".play-btn").style.boxShadow = "none";
+            document.querySelector(".play-btn").textContent = "Indisponible";        
+        }
+    }
         
-
-        
-
-
-        if (account.user_info.role.name === "Responsable Modo") {
-            document.body.style.background = `linear-gradient(#00000066, #00000066) url(${this.config.homeimg_respmodo}) black no-repeat center center scroll`
+        if (account.user_info.role.name === this.config.role_data.role1.name) {
+            document.body.style.background = `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${this.config.role_data.role1.background}) black no-repeat center center scroll`;
         }
-        if (account.user_info.role.name === "Membre") {
-            document.body.style.background = `linear-gradient(#00000066, #00000066) url(${this.config.homeimg_member}) black no-repeat center center scroll`
+        if (account.user_info.role.name === this.config.role_data.role2.name) {
+            document.body.style.background = `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${this.config.role_data.role2.background}) black no-repeat center center scroll`;
         }
-        if (account.user_info.role.name === "Fondateur") {
-            document.body.style.background = `linear-gradient(#00000066, #00000066) url(${this.config.homeimg_fonda}) black no-repeat center center scroll`
+        if (account.user_info.role.name === this.config.role_data.role3.name) {
+            document.body.style.background = `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${this.config.role_data.role3.background}) black no-repeat center center scroll`;
         }
-        if (account.user_info.role.name === "Dev") {
-            document.body.style.background = `linear-gradient(#00000066, #00000066), url("${this.config.homeimg_dev}") black no-repeat center center scroll`
+        if (account.user_info.role.name === this.config.role_data.role4.name) {
+            document.body.style.background = `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${this.config.role_data.role4.background}) black no-repeat center center scroll`;
         }
-        if (account.user_info.role.name === "Admin") {
-            document.body.style.background = `linear-gradient(#00000066, #00000066) url(${this.config.homeimg_admin}) black no-repeat center center scroll`
+        if (account.user_info.role.name === this.config.role_data.role5.name) {
+            document.body.style.background = `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${this.config.role_data.role5.background}) black no-repeat center center scroll`;
         }
-        if (account.user_info.role.name === "Helper") {
-            document.body.style.background = `linear-gradient(#00000066, #00000066) url(${this.config.homeimg_helper}) black no-repeat center center scroll`
+        if (account.user_info.role.name === this.config.role_data.role6.name) {
+            document.body.style.background = `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${this.config.role_data.role6.background}) black no-repeat center center scroll`;
         }
-        if (account.user_info.role.name === "Modo") {
-            document.body.style.background = `linear-gradient(#00000066, #00000066) url(${this.config.homeimg_modo}) black no-repeat center center scroll`
+        if (account.user_info.role.name === this.config.role_data.role7.name) {
+            document.body.style.background = `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${this.config.role_data.role7.background}) black no-repeat center center scroll`;
         }
-        if (account.user_info.role.name === "VIP") {
-            document.body.style.background = `linear-gradient(#00000066, #00000066) url(${this.config.homeimg_vip})  black no-repeat center center scroll`
+        if (account.user_info.role.name === this.config.role_data.role8.name) {
+            document.body.style.background = `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${this.config.role_data.role8.background}) black no-repeat center center scroll`;
         }
         
        
@@ -196,7 +199,7 @@ class Home {
             }
 
             let opts = {
-                url: `${this.config.ftp_url}/files`,
+                url: `${pkg.settings}/data`,
                 authenticator: account,
                 timeout: 10000,
                 path: `${dataDirectory}/${process.platform == 'darwin' ? this.config.dataDirectory : `.${this.config.dataDirectory}`}`,
@@ -208,8 +211,6 @@ class Home {
                     build: this.config.loader.build,
                     enable: this.config.loader.enable,
                 },
-                
-
                 verify: this.config.verify,
                 ignored: this.config.ignored,
 
