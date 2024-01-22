@@ -1,11 +1,11 @@
 {
-    "name": "Conflictura",
-    "preductname": "Conflictura Launcher",
+    "name": "ukyo",
+    "preductname": "Ukyo Launcher",
     "version": "2.3.1",
-    "description": "Conflictura modded server launcher",
+    "description": "Ukyo Launcher",
     "main": "src/app.js",
-    "author": "Luuxis/Riptiaz",
-    "settings": "https://launcher.conflictura.site",
+    "author": "Luuxis/Kyoto",
+    "settings": "http://teste.wanakostudios.websr.fr",
     "engines": {
         "node": "16.x.x"
     },
@@ -34,6 +34,6 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/Riptiaz/CentralCorp-Launcher.git"
+        "url": "git+https://github.com/Senpai661/CentralCorp-Launcher.git"
     }
 }
